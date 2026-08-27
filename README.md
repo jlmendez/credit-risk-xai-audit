@@ -8,33 +8,35 @@ Credit models are not only prediction systems: they are decision systems. This p
 
 ## Highlights
 
-- Reproducible synthetic credit-risk dataset
-- Global and local model explanations with permutation importance and SHAP
-- Local surrogate explanations inspired by LIME
-- Group fairness metrics with bootstrap uncertainty
-- Threshold sensitivity and proxy-variable checks
-- Mitigation comparison and compact model-card workflow
+- Reproducible synthetic credit-risk data
+- Random Forest scoring pipeline
+- Permutation-based global explainability
+- Group-level approval and error analysis
+- Threshold sensitivity and selection-ratio analysis
+- Explicit separation between predictive performance and decision fairness
 
 ## Tech stack
 
-Python · pandas · NumPy · scikit-learn · SHAP · Matplotlib
+Python · pandas · NumPy · scikit-learn
 
 ## Repository structure
 
-- `notebooks/credit_risk_xai_fairness_audit.ipynb` — complete analytical workflow
+- `src/audit_demo.py` — compact reproducible XAI/fairness audit
 - `requirements.txt` — Python dependencies
-- `data/external/` — reserved for optional external datasets
+- `.gitignore` — excludes environments and generated artifacts
 
-## Reproducibility
-
-The notebook generates its own synthetic data, so no private or external dataset is required.
+## Run
 
 ```bash
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
-jupyter lab
+python src/audit_demo.py
 ```
 
-Notebook outputs are intentionally cleared in the repository so the analysis can be reproduced from a clean state.
+The dataset is generated synthetically, so no private or external data are required.
+
+## Portfolio context
+
+This repository is a production-style refactoring of a broader analytical notebook on explainable AI, fairness, proxy variables, mitigation, and model governance. The public version emphasizes reusable Python code and reproducibility.
