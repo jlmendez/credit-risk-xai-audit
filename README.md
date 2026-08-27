@@ -1,29 +1,67 @@
 # Credit Risk XAI & Fairness Audit
 
-An end-to-end audit of a synthetic credit-scoring system covering predictive performance, explainability, fairness, threshold sensitivity, proxy-variable analysis, mitigation, and model governance.
+[![CI](https://github.com/jlmendez/credit-risk-xai-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/jlmendez/credit-risk-xai-audit/actions/workflows/ci.yml)
 
-## Why this project matters
+An end-to-end audit of a synthetic credit-scoring system covering **predictive performance, explainability, fairness, threshold sensitivity and governance**.
 
-Credit models are not only prediction systems: they are decision systems. This project examines how a model behaves, why it makes particular decisions, and whether those decisions remain equitable across groups.
+## Audit workflow
 
-## Highlights
+```mermaid
+flowchart LR
+    A[Synthetic applicant data] --> B[Random Forest model]
+    B --> C[Predicted risk]
+    C --> D[Performance metrics]
+    C --> E[Permutation explainability]
+    C --> F[Group fairness metrics]
+    C --> G[Threshold sweep]
+    E --> H[Interpretation]
+    F --> H
+    G --> H
+    H --> I[Governance recommendation]
+```
 
-- Reproducible synthetic credit-risk data
-- Random Forest scoring pipeline
-- Permutation-based global explainability
-- Group-level approval and error analysis
-- Threshold sensitivity and selection-ratio analysis
-- Explicit separation between predictive performance and decision fairness
+The central idea is that a credit model is not only a prediction system. It is also a **decision system**, so model quality must be examined together with decision behavior across groups.
 
-## Tech stack
+## What this demonstrates
 
-Python · pandas · NumPy · scikit-learn
+- reproducible synthetic credit-risk data generation;
+- Random Forest scoring pipeline;
+- permutation-based global explainability;
+- approval, opportunity and bad-approval metrics by group;
+- selection-ratio and opportunity-gap summaries;
+- bootstrap uncertainty for fairness indicators;
+- threshold sensitivity analysis;
+- explicit governance logic separating performance from fairness.
+
+## Validation signals
+
+| Check | Expected behavior |
+|---|---|
+| Identical decision behavior across groups | selection ratio close to `1.0` |
+| Equal favorable opportunity | opportunity gap close to `0.0` |
+| Bootstrap fairness interval | returns lower / median / upper quantiles |
+| CI | runs the audit-property tests on every push / pull request |
 
 ## Repository structure
 
-- `src/audit_demo.py` — compact reproducible XAI/fairness audit
-- `requirements.txt` — Python dependencies
-- `.gitignore` — excludes environments and generated artifacts
+```text
+.
+├── notebooks/
+│   ├── README.md
+│   └── xai_audit_walkthrough.ipynb
+├── src/
+│   ├── audit_demo.py
+│   ├── data_generation.py
+│   ├── explainability.py
+│   ├── fairness_metrics.py
+│   ├── governance.py
+│   └── threshold_analysis.py
+├── tests/
+│   └── test_fairness_metrics.py
+├── .github/workflows/
+│   └── ci.yml
+└── requirements.txt
+```
 
 ## Run
 
@@ -35,8 +73,13 @@ pip install -r requirements.txt
 python src/audit_demo.py
 ```
 
-The dataset is generated synthetically, so no private or external data are required.
+Run the automated checks with:
+
+```bash
+pip install pytest
+pytest -q
+```
 
 ## Portfolio context
 
-This repository is a production-style refactoring of a broader analytical notebook on explainable AI, fairness, proxy variables, mitigation, and model governance. The public version emphasizes reusable Python code and reproducibility.
+This repository is a production-style refactoring of a broader analytical workflow on explainable AI, fairness, proxy variables, mitigation and model governance. The public version uses synthetic data so the complete audit logic can be inspected without exposing private financial information.
